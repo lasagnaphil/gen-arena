@@ -4,6 +4,7 @@
 
 This is an implementation of a generational arena (or a slot map, sparse set, etc. depending on the terminology), implemented in C++11 with minimal dependencies.
 
+(Current status: alpha, only Windows MSVC and Clang are tested)
 ## Using the library
 
 This is a header-only library, so just grab the header files in `src/` and you're good to go. (All three header files are needed!)
