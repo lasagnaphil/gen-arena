@@ -4,16 +4,6 @@
 
 #include <gen_arena_raw.h>
 
-#ifdef GEN_ARENA_FORCE_DECLARE_TYPE_ID_FUN
-template <class T>
-constexpr uint32_t gen_arena_type_id();
-#else
-
-template <class T>
-constexpr uint32_t gen_arena_type_id() { return 0; }
-
-#endif
-
 template <class T, class Config = GenArenaDefaultConfig>
 class GenArenaTypedRef : public GenArenaRef<Config> {
 };
@@ -237,21 +227,7 @@ public:
     }
 
     template <class Fun>
-    void foreach_ref(Fun&& fun) {
-        GenArenaMetadata* metadata = _raw.metadata_buf();
-        auto* free_list = _raw.free_list_buf();
-        for (uint32_t i = 0; i < _raw.size(); i++) {
-            uint32_t index = metadata[i].dense_to_sparse;
-            Ref ref;
-            ref.index = index;
-            ref.type_id = gen_arena_type_id<T>();
-            ref.generation = free_list[index].generation;
-            fun(ref);
-        }
-    }
-
-    template <class Fun>
-    void foreach_val(Fun&& fun) {
+    void foreach(Fun&& fun) {
         T* items = static_cast<T*>(_raw.item_buf());
         for (uint32_t i = 0; i < _raw.size(); i++) {
             auto& val = items[i];
@@ -260,7 +236,7 @@ public:
     }
 
     template <class Fun>
-    void foreach_ref_val(Fun&& fun) {
+    void foreach_with_ref(Fun&& fun) {
         T* items = static_cast<T*>(_raw.item_buf());
         GenArenaMetadata* metadata = _raw.metadata_buf();
         auto* free_list = _raw.free_list_buf();

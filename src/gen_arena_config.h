@@ -1,6 +1,10 @@
 #pragma once
 
+// for integer typedefs
 #include <stdint.h>
+
+// For memory-related functions such as memcpy()
+#include <string.h>
 
 /* Aligned alloc/free functions. Note that the default implmeentation is platform/compiler dependent. */
 
@@ -9,7 +13,6 @@
 #ifdef _WIN32
 
 #include <corecrt_malloc.h>
-
 inline void* gen_arena_aligned_alloc(size_t size, size_t alignment) {
     return _aligned_malloc(size, alignment);
 }

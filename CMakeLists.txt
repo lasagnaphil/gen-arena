@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 project(gen_arena)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 add_library(gen_arena INTERFACE)
 target_include_directories(gen_arena INTERFACE src)
 
-add_executable(gen_arena_test test/main.cpp)
+add_executable(gen_arena_test test/test_gen_arena.cpp test/test_gen_arena_poly.cpp test/main.cpp)
 target_include_directories(gen_arena_test PRIVATE test)
 target_link_libraries(gen_arena_test PRIVATE gen_arena)
 

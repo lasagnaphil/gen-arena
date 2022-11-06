@@ -9,6 +9,29 @@
 
 #include "gen_arena_config.h"
 
+// TODO: Should this function go to gen_arena_config.h instead?
+#ifdef GEN_ARENA_FORCE_DECLARE_TYPE_ID_FUN
+
+template <class T>
+constexpr uint32_t gen_arena_type_id();
+
+#ifdef GEN_ARENA_USE_POLYMORPHIC_TYPES
+template <class T>
+constexpr uint32_t gen_arena_subtype_id_end();
+#endif
+
+#else
+
+template <class T>
+constexpr uint32_t gen_arena_type_id() { return UINT32_MAX; }
+
+#ifdef GEN_ARENA_USE_POLYMORPHIC_TYPES
+template <class T>
+constexpr uint32_t gen_arena_subtype_id_end() { return UINT32_MAX; }
+#endif
+
+#endif
+
 template <class T>
 inline T* gen_arena_new_array(size_t size) {
     return static_cast<T*>(gen_arena_aligned_alloc(sizeof(T) * size, alignof(T)));
